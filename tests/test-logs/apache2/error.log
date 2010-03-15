@@ -1,0 +1,36 @@
+[Sun Mar 14 09:36:04 2010] [warn] mod_wsgi: Compiled for Python/2.6.2.
+[Sun Mar 14 09:36:04 2010] [warn] mod_wsgi: Runtime using Python/2.6.4.
+[Sun Mar 14 09:36:04 2010] [warn] mod_wsgi: Python module path '/usr/lib/python2.6/:/usr/lib/python2.6/plat-linux2:/usr/lib/python2.6/lib-tk:/usr/lib/python2.6/lib-old:/usr/lib/python2.6/lib-dynload'.
+[Sun Mar 14 09:36:04 2010] [notice] Apache/2.2.12 (Ubuntu) mod_wsgi/2.5 Python/2.6.4 configured -- resuming normal operations
+[Sun Mar 14 11:52:30 2010] [error] [client 127.0.0.1] mod_wsgi (pid=12564): Exception occurred processing WSGI script '/var/www/support/master_runner.py'.
+[Sun Mar 14 11:52:30 2010] [error] [client 127.0.0.1] Traceback (most recent call last):
+[Sun Mar 14 11:52:30 2010] [error] [client 127.0.0.1]   File "/var/www/support/master_runner.py", line 52, in application
+[Sun Mar 14 11:52:30 2010] [error] [client 127.0.0.1]     raise Exception("Bad site: %r" % site)
+[Sun Mar 14 11:52:30 2010] [error] [client 127.0.0.1] Exception: Bad site: ''
+[Sun Mar 14 22:26:18 2010] [error] [client 69.143.59.169] File does not exist: /htdocs, referer: http://cloudsilverlining.org/django-quickstart.html
+[Sun Mar 14 22:26:18 2010] [error] [client 69.143.59.169] File does not exist: /htdocs
+[Sun Mar 07 09:36:03 2010] [warn] mod_wsgi: Compiled for Python/2.6.2.
+[Sun Mar 07 09:36:03 2010] [warn] mod_wsgi: Runtime using Python/2.6.4.
+[Sun Mar 07 09:36:03 2010] [warn] mod_wsgi: Python module path '/usr/lib/python2.6/:/usr/lib/python2.6/plat-linux2:/usr/lib/python2.6/lib-tk:/usr/lib/python2.6/lib-old:/usr/lib/python2.6/lib-dynload'.
+[Sun Mar 07 09:36:03 2010] [notice] Apache/2.2.12 (Ubuntu) mod_wsgi/2.5 Python/2.6.4 configured -- resuming normal operations
+[Wed Mar 10 00:14:27 2010] [error] [client 127.0.0.1] Body: 'payload=%7B%22commits%22%3A+%5B%7B%22node%22%3A+%22582f7d01ec43%22%2C+%22files%22%3A+%5B%7B%22type%22%3A+%22modified%22%2C+%22file%22%3A+%22silverlining%2Fserver-files%2Fupdate-server-script.sh%22%7D%5D%2C+%22author%22%3A+%22ianb%22%2C+%22timestamp%22%3A+%222010-03-10+01%3A14%3A03%22%2C+%22raw_node%22%3A+%22582f7d01ec43adace1061c84ce98ea10d4d84563%22%2C+%22parents%22%3A+%5B%2278f80f91f66a%22%5D%2C+%22branch%22%3A+%22trunk%22%2C+%22message%22%3A+%22remove+unnecessary+pg+restart%22%2C+%22revision%22%3A+290%2C+%22size%22%3A+136%7D%2C+%7B%22node%22%3A+%227c2eb71449f5%22%2C+%22files%22%3A+%5B%7B%22type%22%3A+%22modified%22%2C+%22file%22%3A+%22docs%2Fdjango-quickstart.txt%22%7D%5D%2C+%22author%22%3A+%22ianb%22%2C+%22timestamp%22%3A+%222010-03-10+01%3A14%3A08%22%2C+%22raw_node%22%3A+%227c2eb71449f549dbe20e64d57d8f258fe3502039%22%2C+%22parents%22%3A+%5B%22582f7d01ec43%22%5D%2C+%22branch%22%3A+%22trunk%22%2C+%22message%22%3A+%22note+path+in+docs%22%2C+%22revision%22%3A+291%2C+%22size%22%3A+431%7D%5D%2C+%22repository%22%3A+%7B%22owner%22%3A+%22ianb%22%2C+%22website%22%3A+%22http%3A%2F%2Fcloudsilverlining.org%2F%22%2C+%22slug%22%3A+%22silverlining%22%2C+%22name%22%3A+%22silverlining%22%2C+%22absolute_url%22%3A+%22%2Fianb%2Fsilverlining%2F%22%7D%2C+%22user%22%3A+%22ianb%22%7D' (parsed: {u'commits': [{u'node': u'582f7d01ec43', u'files': [{u'type': u'modified', u'file': u'silverlining/server-files/update-server-script.sh'}], u'author': u'ianb', u'timestamp': u'2010-03-10 01:14:03', u'raw_node': u'582f7d01ec43adace1061c84ce98ea10d4d84563', u'parents': [u'78f80f91f66a'], u'branch': u'trunk', u'message': u'remove unnecessary pg restart', u'size': 136, u'revision': 290}, {u'node': u'7c2eb71449f5', u'files': [{u'type': u'modified', u'file': u'docs/django-quickstart.txt'}], u'author': u'ianb', u'timestamp': u'2010-03-10 01:14:08', u'raw_node': u'7c2eb71449f549dbe20e64d57d8f258fe3502039', u'parents': [u'582f7d01ec43'], u'branch': u'trunk', u'message': u'note path in docs', u'size': 431, u'revision': 291}], u'user': u'ianb', u'repository': {u'owner': u'ianb', u'website': u'http://cloudsilverlining.org/', u'absolute_url': u'/ianb/silverlining/', u'slug': u'silverlining', u'name': u'silverlining'}})
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] Running: hg clone http://cloudsilverlining.org/ianb/silverlining/ /var/lib/silverlining/apps/bbdocs/checkouts/silverlining
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] 
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] --stderr:
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] abort: unexpected response:
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] 'APP_NAME=bbdocs\\nCONFIG_WRITABLE_ROOT=/var/lib/silverlining/writable-roots/bbdocs\\nDOCUMENT_ROOT=/htdocs\\nGATEWAY_INTERFACE=CGI/1.1\\nHTTP_ACCEPT=application/mercurial-0.1\\nHTTP_ACCEPT_ENCODING=identity\\nHTTP_HOST=cloudsilverlining.org\\nHTTP_USER_AGENT=mercurial/proto-1.0\\nHTTP_X_VARNISH=813247092\\nPATH=/usr/local/bin:/usr/bin:/bin\\nPATH_INFO=/ianb/silverlining/\\nPATH_TRANSLATED=/var/www/support/master_run...'
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] 
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] --------
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] mod_wsgi (pid=20312): Exception occurred processing WSGI script '/var/www/support/master_runner.py'.
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] Traceback (most recent call last):
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]   File "/var/www/support/master_runner.py", line 49, in application
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]     return found_app(environ, start_response)
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]   File "/var/www/bbdocs.1.2010-03-03_003/lib/python/webob/dec.py", line 159, in __call__
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]     return resp(environ, start_response)
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]   File "/var/www/bbdocs.1.2010-03-03_003/lib/python/webob/dec.py", line 147, in __call__
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]     resp = self.call_func(req, *args, **self.kwargs)
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]   File "/var/www/bbdocs.1.2010-03-03_003/lib/python/webob/dec.py", line 208, in call_func
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]     return self.func(req, *args, **kwargs)
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]   File "/var/www/bbdocs.1.2010-03-03_003/src/bbdocs/bbdocs/main.py", line 132, in update
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1]     assert 0
+[Wed Mar 10 00:14:28 2010] [error] [client 127.0.0.1] AssertionError
