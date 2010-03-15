@@ -83,6 +83,7 @@ class LogSet(object):
     def __init__(self, dirs):
         self.dirs = dirs
         self.logs = {}
+        self.skipped_files = []
 
     def read(self):
         self.logs = {}
@@ -104,7 +105,7 @@ class LogSet(object):
                     break
             else:
                 ## FIXME: should log something about ignoring the log
-                print 'Could not match file', filename
+                self.skipped_files.append(filename)
 
 def walk_files(dirs):
     for dir in dirs:

@@ -12,3 +12,16 @@ Choose a log to view:
 </ul>
 
 {{endfor}}
+
+{{if log_set.skipped_files}}
+<button type="button" class="toggle" toggle-el="#skipped-files">Show skipped
+files</button><br>
+<div id="skipped-files" style="display: none">
+  <ul>
+    {{for filename in sorted(log_set.skipped_files)}}
+      <li><code>{{filename}}</code></li>
+    {{endfor}}
+  </ul>
+</div>
+
+{{endif}}
