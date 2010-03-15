@@ -1,0 +1,14 @@
+Choose a log to view:
+
+{{for name, logs in sorted(log_set.logs.iteritems()):}}
+<h2>{{name}}</h2>
+
+<ul>
+  {{for path, log in sorted(logs.iteritems()):}}
+  <li><a href="/view/{{log.group|url}}?path={{log.path|url}}">
+        {{log.description}}</a>
+  </li>
+  {{endfor}}
+</ul>
+
+{{endfor}}

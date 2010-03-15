@@ -1,0 +1,10 @@
+[production]
+app_name = silverlog
+version = 1
+runner = src/SilverLog/silver-runner.py
+
+# Should there be a setting of some sort to mark apps that work over
+# the entire system?
+# Or, should there be a setting for DevAuth access?
+#service.system =
+

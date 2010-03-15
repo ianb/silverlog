@@ -1,0 +1,106 @@
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (2) init rewrite engine with requested uri /index.html
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '(.*)' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='8080' pattern='^8080$' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='cloudsilverlining.org' pattern='^www\.(.*)$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) map lookup OK: map=hostmap[txt] key=cloudsilverlining.org -> val=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='bbdocs.1.2010-03-03_003' pattern='^__default__$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) cache lookup OK: map=hostmap[txt] key=cloudsilverlining.org -> val=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='bbdocs.1.2010-03-03_003' pattern='^disabled$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='cloudsilverlining.org' pattern='(.*)' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) cache lookup OK: map=hostmap[txt] key=cloudsilverlining.org -> val=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) setting env variable 'SITE' to 'bbdocs.1.2010-03-03_003'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '(.*/)index.html' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '(.*)' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/index.html' pattern='-d' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/index.html/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) map lookup OK: map=writable-roots[txt] key=bbdocs.1.2010-03-03_003 -> val=writable
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='writable' pattern='!^writable$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) cache lookup OK: map=writable-roots[txt] key=bbdocs.1.2010-03-03_003 -> val=writable
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='writable' pattern='^writable$' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) setting env variable 'CONFIG_WRITABLE_ROOT' to '/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '(.*/)index.html' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '(.*)' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/index.html' pattern='-d' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/index.html/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) map lookup FAILED: map=platforms[txt] key=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='' pattern='^php$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) cache lookup OK: map=platforms[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='' pattern='^php$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) map lookup FAILED: map=process-types[txt] key=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='' pattern='^debug$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) cache lookup OK: map=process-types[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='normal' pattern='^normal$' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) setting env variable 'PROCESS_GROUP' to 'general'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (3) applying pattern '.' to uri '/index.html'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (5) cache lookup OK: map=platforms[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (4) RewriteCond: input='' pattern='^php$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb2a98/initial] (1) pass through /index.html
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (2) init rewrite engine with requested uri /favicon.ico
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '(.*)' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='8080' pattern='^8080$' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='cloudsilverlining.org' pattern='^www\.(.*)$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=hostmap[txt] key=cloudsilverlining.org -> val=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='bbdocs.1.2010-03-03_003' pattern='^__default__$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=hostmap[txt] key=cloudsilverlining.org -> val=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='bbdocs.1.2010-03-03_003' pattern='^disabled$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='cloudsilverlining.org' pattern='(.*)' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=hostmap[txt] key=cloudsilverlining.org -> val=bbdocs.1.2010-03-03_003
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) setting env variable 'SITE' to 'bbdocs.1.2010-03-03_003'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '(.*/)index.html' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/favicon.ico' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '(.*)' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/favicon.ico' pattern='-d' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='/var/www/bbdocs.1.2010-03-03_003/static/favicon.ico/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=writable-roots[txt] key=bbdocs.1.2010-03-03_003 -> val=writable
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='writable' pattern='!^writable$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=writable-roots[txt] key=bbdocs.1.2010-03-03_003 -> val=writable
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='writable' pattern='^writable$' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) setting env variable 'CONFIG_WRITABLE_ROOT' to '/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '(.*/)index.html' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/favicon.ico' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '(.*)' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/favicon.ico' pattern='-d' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='/var/lib/silverlining/writable-roots/bbdocs.1.2010-03-03_003/favicon.ico/index.html' pattern='-f' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=platforms[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='' pattern='^php$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=platforms[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='' pattern='^php$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=process-types[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='' pattern='^debug$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=process-types[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='normal' pattern='^normal$' => matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) setting env variable 'PROCESS_GROUP' to 'general'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (3) applying pattern '.' to uri '/favicon.ico'
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (5) cache lookup OK: map=platforms[txt] key=bbdocs.1.2010-03-03_003 -> val=
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (4) RewriteCond: input='' pattern='^php$' => not-matched
+127.0.0.1 - - [03/Mar/2010:23:48:20 +0000] [cloudsilverlining.org/sid#7f665fdc11b8][rid#7f665feb6ab8/initial] (1) pass through /favicon.ico
