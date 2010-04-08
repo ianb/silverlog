@@ -22,3 +22,7 @@ body {
   text-decoration: none;
   color: #fff;
 }
+
+pre.content {
+  overflow: auto;
+}
