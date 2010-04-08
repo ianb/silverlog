@@ -1,5 +1,6 @@
 import os
 import re
+import json
 import tempita
 from webob.dec import wsgify
 from webob import exc
@@ -10,9 +11,8 @@ from silverlog.util import URLGenerator
 class Application(object):
 
     map = Mapper()
-    map.connect('index', '/', method='index')
-    map.connect('view', '/view/{group}', method='view')
-    template_base = os.path.join(os.path.dirname(__file__), 'templates')
+    map.connect('list_logs', '/api/list-logs', method='list_logs')
+    map.connect('log_view', '/api/log/{id}', method='log_view')
 
     def __init__(self, dirs=None, template_base=None):
         if template_base:
@@ -22,19 +22,10 @@ class Application(object):
         self.log_set = LogSet(dirs)
         self.log_set.read()
 
-    def render(self, template_name, req, title, **kw):
-        kw['req'] = req
-        kw['title'] = title
-        kw['app'] = self
-        kw['log_set'] = self.log_set
-        tmpl = tempita.HTMLTemplate.from_filename(
-            os.path.join(self.template_base, template_name + '.html'),
-            default_inherit=os.path.join(self.template_base, 'base.html'))
-        return tmpl.substitute(kw)
-
     @wsgify
     def __call__(self, req):
         results = self.map.routematch(environ=req.environ)
+        print results, req.path_info
         if not results:
             return exc.HTTPNotFound()
         match, route = results
@@ -47,16 +38,22 @@ class Application(object):
         req.link = link
         return getattr(self, method)(req, **kwargs)
 
-    def index(self, req):
-        return Response(
-            self.render('index', req, 'Index of logs'))
+    def list_logs(self, req):
+        result = {}
+        items = result['logs'] = []
+        for path, logs in sorted(self.log_set.logs.iteritems()):
+            for log in logs.values():
+                items.append(dict(path=path, group=log.group,
+                                  id=log.id, description=log.description))
+        return json_response(result)
 
-    def view(self, req, group):
-        path = req.GET['path']
-        log = self.log_set.logs[group][path]
-        return Response(
-            self.render('view', req, 'Viewing %s' % log.description,
-                        log=log))
+    def log_view(self, req, id):
+        log = self.log_set.log_from_id(id)
+        result = dict(
+            path=log.path, group=log.group,
+            id=log.id, description=log.description,
+            content=log.content())
+        return json_response(result)
 
 NAMES = [
     (r'^SILVER_DIR/apps/(?P<app>[^/]+)/stderr.log$',
@@ -107,6 +104,13 @@ class LogSet(object):
                 ## FIXME: should log something about ignoring the log
                 self.skipped_files.append(filename)
 
+    def log_from_id(self, id):
+        path = '/' + id.replace('_', '/')
+        for group, items in self.logs.iteritems():
+            if path in items:
+                return items[path]
+        raise LookupError("No log with the path %r" % path)
+
 def walk_files(dirs):
     for dir in dirs:
         for dirpath, dirnames, filenames in os.walk(dir):
@@ -119,7 +123,7 @@ class Log(object):
         self.path = path
         self.group = group
         self.description = description
-        
+
     def __repr__(self):
         return '<%s %s: %r>' % (
             self.__class__.__name__,
@@ -130,3 +134,12 @@ class Log(object):
         c = fp.read()
         fp.close()
         return c
+
+    @property
+    def id(self):
+        id = self.path.replace('/', '_').strip('_')
+        return id
+
+def json_response(data):
+    return Response(json.dumps(data),
+                    content_type='application/json')
