@@ -14,6 +14,7 @@ class Application(object):
     map = Mapper()
     map.connect('list_logs', '/api/list-logs', method='list_logs')
     map.connect('log_view', '/api/log/{id}', method='log_view')
+    map.connect('skipped_files', '/api/skipped-files', method='skipped_files')
 
     def __init__(self, dirs=None, template_base=None):
         if template_base:
@@ -26,7 +27,6 @@ class Application(object):
     @wsgify
     def __call__(self, req):
         results = self.map.routematch(environ=req.environ)
-        print results, req.path_info
         if not results:
             return exc.HTTPNotFound()
         match, route = results
@@ -49,33 +49,44 @@ class Application(object):
         return json_response(result)
 
     def log_view(self, req, id):
-        log = self.log_set.log_from_id(id)
+        try:
+            log = self.log_set.log_from_id(id)
+        except (OSError, IOError), e:
+            return json_response(
+                dict(error=str(e), log_id=id),
+                status='500')
         result = dict(
             path=log.path, group=log.group,
             id=log.id, description=log.description,
-            content=log.content(),
             chunks=log.parse_chunks(),
             log_type=log.parser)
+        if 'nocontent' not in req.GET:
+            result['content'] = log.content()
+        return json_response(result)
+
+    def skipped_files(self, req):
+        result = dict(
+            skipped_files=self.log_set.skipped_files)
         return json_response(result)
 
 NAMES = [
-    (r'^SILVER_DIR/apps/(?P<app>[^/]+)/error.log$',
-     ('{{app}}', '{{app}}: error log'),
+    (r'^SILVER_DIR/apps/(?P<app>[^/]+)/error.log(?:\.(?P<number>\d+))?$',
+     ('{{app}}', '{{app}}: error log{{if number}} (backup {{number}}){{endif}}'),
      'silver_error_log'),
-    (r'^SILVER_DIR/apps/(?P<app>[^/]+)/(?P<name>.*)$',
-     ('{{app}}', '{{app}}: {{name}}'),
+    (r'^SILVER_DIR/apps/(?P<app>[^/]+)/(?P<name>.*)(?:\.(?P<number>\d+))?$',
+     ('{{app}}', '{{app}}: {{name}}{{if number}} (backup {{number}}){{endif}}'),
      'generic_log'),
-    (r'^APACHE_DIR/access.log$',
-     ('system', 'Apache access log'),
+    (r'^APACHE_DIR/access.log(?:\.(?P<number>\d+))?$',
+     ('system', 'Apache access log{{if number}} (backup {{number}}){{endif}}'),
      'apache_access_log'),
-    (r'^APACHE_DIR/error.log$',
-     ('system', 'Apache error log'),
+    (r'^APACHE_DIR/error.log(?:\.(?P<number>\d+))?$',
+     ('system', 'Apache error log{{if number}} (backup {{number}}){{endif}}'),
      'apache_error_log'),
-    (r'^APACHE_DIR/rewrite.log$',
-     ('system', 'Apache rewrite log'),
+    (r'^APACHE_DIR/rewrite.log(?:\.(?P<number>\d+))?$',
+     ('system', 'Apache rewrite log{{if number}} (backup {{number}}){{endif}}'),
      'apache_rewrite_log'),
-    (r'^SILVER_DIR/setup-node.log',
-     ('system', 'silver setup-node log'),
+    (r'^SILVER_DIR/setup-node.log(?:\.(?P<number>\d+))?',
+     ('system', 'silver setup-node log{{if number}} (backup {{number}}){{endif}}'),
      'silver_setup_node_log'),
     ]
 
@@ -156,9 +167,6 @@ class Log(object):
             l.append({'data': line.strip()})
         return l
 
-    silver_error_log = generic_log
-    apache_rewrite_log = generic_log
-
     def apache_access_log(self):
         fp = open(self.path)
         l = []
@@ -188,7 +196,7 @@ class Log(object):
               \s+
             (?P<host>[^ ]+)
               \s+
-            (?P<app_name>[^ ]+)
+            "(?P<app_name>[^ ]+)"
               \s+
             (?P<milliseconds>\d+)
             )?
@@ -198,6 +206,8 @@ class Log(object):
             match = regex.match(line)
             if match:
                 data = match.groupdict()
+                if data.get('app_name') == '-':
+                    data['app_name'] = ''
                 data['date'] = self._translate_apache_date(data['date'])
             else:
                 data = {}
@@ -230,12 +240,16 @@ class Log(object):
             match = regex.match(line)
             if match:
                 data = match.groupdict()
-                if (last_data and data['date'] == last_data['date']
-                    and data['level'] == last_data['level']
-                    and data['remote_addr'] == last_data['remote_addr']):
+                if (last_data and data['date'] == last_data.get('date')
+                    and data['level'] == last_data.get('level')
+                    and data['remote_addr'] == last_data.get('remote_addr')):
                     last_data['data'] += '\n' + line
                     last_data['message'] += '\n' + data['message']
                     continue
+            elif last_data:
+                last_data['data'] += '\n' + line
+                last_data['message'] += '\n' + line
+                continue
             else:
                 data = {}
             data['data'] = line
@@ -277,11 +291,55 @@ class Log(object):
             l.append(last_item)
         return l
 
+    def apache_rewrite_log(self):
+        fp = open(self.path)
+        l = []
+        regex = re.compile(
+            r'''
+            ^
+            (?P<remote_addr>[0-9\.]+)
+              \s+
+            - \s+
+            - \s+
+            \[(?P<date>[^\]]+)\]
+              \s+
+            \[(?P<request_id>[^\]]+)\]
+            \[(?P<request_id2>[^\]]+)\]
+              \s+
+            \((?P<level>\d+)\)
+              \s
+            (?P<message>.*)
+            ''', re.VERBOSE | re.I)
+        last_item = {}
+        for line in fp:
+            line = line.strip()
+            match = regex.match(line)
+            if not match:
+                l.append(dict(data=line))
+                last_item = l[-1]
+            else:
+                data = match.groupdict()
+                data['date'] = self._translate_apache_date(data['date'])
+                if not data['message'].startswith('applying pattern'):
+                    data['message'] = '  ' + data['message']
+                if (last_item
+                    and data['remote_addr'] == last_item['remote_addr']
+                    and data['date'] == last_item['date']
+                    and data['request_id'] == last_item['request_id']):
+                    last_item['data'] += '\n' + line
+                    last_item['message'] += '\n' + data['message']
+                else:
+                    data['data'] = line
+                    l.append(data)
+                    last_item = data
+        return l
+
     @property
     def id(self):
         id = self.path.replace('/', '_').strip('_')
         return id
 
-def json_response(data):
+def json_response(data, **kw):
     return Response(json.dumps(data),
-                    content_type='application/json')
+                    content_type='application/json',
+                    **kw)

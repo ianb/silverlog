@@ -1,34 +1,67 @@
+$.fn.ajaxRender = function (options, declarations) {
+  var selector = this.selector;
+  if (typeof options == 'string') {
+    options = {url: options};
+  }
+  options.success = function (result) {
+    $(selector).render(result, declarations);
+  };
+  options.dataType = options.dataType || "json";
+  return $.ajax(options);
+};
+
 var app = $.sammy(function () {
   this.element_selector = '#body';
 
   this.get('#/', function (context) {
     moveScreen('#main');
     $('#main #log-list li:nth-child(1n+2)').remove();
+    $('#main #skipped-list li:nth-child(1n+2)').remove();
     $('#header #title-slot').text('index');
+
+    $('#main').ajaxRender(
+      "./api/list-logs",
+      {
+        "#log-list li": {
+          "log<-logs": {
+            "a": "log.description",
+            "a@href": function (ctx) {
+              return '#/view/'+ctx.item.id;
+            }
+          }
+        }
+      });
+
     $.ajax({
-      url: "/api/list-logs",
+      url: "./api/skipped-files",
       dataType: "json",
       success: function (result) {
         $('#main').render(
           result,
           {
-            "#log-list li": {
-              "log<-logs": {
-                "a": "log.description",
-                "a@href": function (ctx) {
-                  return '#/view/'+ctx.item.id;
-                }
+            "#skipped-list li": {
+              "skipped_file<-skipped_files": {
+                ".": "skipped_file"
               }
             }
           });
+        if (! result.skipped_files.length) {
+          $('#skipped-list').hide();
+          $('#skipped-list-title').hide();
+        } else {
+          $('#skipped-list').show();
+          $('#skipped-list-title').show();
+        }
       }
     });
+
   });
 
   this.get('#/view/:log_id', function (context) {
     moveScreen('#log-view');
+    $('#header #title-slot').text('Loading...');
     $.ajax({
-      url: "/api/log/"+this.params.log_id,
+      url: "./api/log/" + this.params.log_id + "?nocontent",
       dataType: "json",
       success: function (result) {
         var log_type = result.log_type;
@@ -43,8 +76,6 @@ var app = $.sammy(function () {
         tmpl.show();
         tmpl.addClass('log-view');
         $('#log-view').append(tmpl);
-        console.log('rule', templateRules[log_type]);
-        console.log('data', result);
         tmpl = tmpl.render(
           result,
           templateRules[log_type]);
@@ -73,17 +104,45 @@ templateRules = {
     "tr.log-section": {
       "chunk<-chunks": {
         ".log-date": "chunk.date",
+        ".log-date@title": "chunk.date",
         ".log-method": "chunk.method",
         ".log-path": "chunk.path",
         ".log-response_code": "chunk.response_code",
+        ".log-response_code@class+": function (ctx) {
+          return " response-code-"+ctx.item.response_code;
+        },
         ".log-response_bytes": "chunk.response_bytes",
-        ".log-referrer": function (ctx) {return ctx.item.referrer == "-" ? "" : ctx.item.referrer},
-        ".log-referrer@href": function (ctx) {return ctx.item.referrer == "-" ? "" : ctx.item.referrer},
+        ".log-referrer": function (ctx) {
+          var ref = ctx.item.referrer;
+          var host = ctx.item.host;
+          if (ref == "-")
+            return "";
+          if (ref.substr(7, host.length) == host) {
+            return ref.substr(host.length+7);
+          }
+          return ref.substr(ref.indexOf('://')+3);
+        },
+        ".log-referrer@href": function (ctx) {
+          return ctx.item.referrer == "-" ? "" : ctx.item.referrer;
+        },
         ".log-user_agent": "chunk.user_agent",
-        ".log-host": "chunk.host",
-        ".log-host@href": function (ctx) {return "http://"+ctx.item.host;},
+        ".log-host": function (ctx) {
+          var host = ctx.item.host;
+          if (host == "-") {
+            return "";
+          }
+          var idx = host.indexOf(".");
+          if (idx != -1) {
+              return host.substr(0, idx);
+          }
+          return host;
+        },
+        ".log-host@title": "chunk.host",
+        ".log-host@href": function (ctx) {
+          return ctx.item.host == "-" ? "" : "http://"+ctx.item.host;
+        },
         ".log-app_name": "chunk.app_name",
-        ".log-milliseconds": "chunk.milliseconds"
+        ".log-time": function (ctx) {return ctx.item.milliseconds/1000000;}
       }
     }
   },
@@ -92,9 +151,21 @@ templateRules = {
     "div.log-section": {
       "chunk<-chunks": {
         ".log-warning-level": "chunk.level",
-        ".log-warning-level@class+": function (ctx) {return " log-warning-level-"+ctx.item.level},
+        ".log-warning-level@class+": function (ctx) {return " log-warning-level-"+ctx.item.level;},
+        ".log-date@title": "chunk.date",
         ".log-date": "chunk.date",
         ".log-client": "chunk.remote_addr",
+        ".log-message": "chunk.message"
+      }
+    }
+  },
+
+  "apache_rewrite_log": {
+    "div.log-section": {
+      "chunk<-chunks": {
+        ".log-date": "chunk.date",
+        ".log-date@title": "chunk.date",
+        ".log-remote_addr": "chunk.remote_addr",
         ".log-message": "chunk.message"
       }
     }
