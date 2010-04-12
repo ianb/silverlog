@@ -1,11 +1,15 @@
 <html>
 <head>
 <link href="/style.css" type="text/css" rel="stylesheet" />
-<script
+<!-- <script
 src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+-->
+<script
+src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
 <script src="/sammy.js"></script>
-<script src="/script.js"></script>
 <script src="/pure.js"></script>
+<script src="/jquery.relatize_date.js"></script>
+<script src="/script.js"></script>
 <title>Silver Logs</title>
 </head>
 <body>
@@ -30,6 +34,56 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </div>
 
 </div><!-- /#body -->
+
+<div style="display: none">
+
+  <div class="template-default">
+    <div class="log-section">
+      <code class="log-line"></code>
+    </div>
+  </div>
+
+  <div class="template-apache_access_log">
+    <table>
+      <tr class="log-section-header">
+        <th>Date</th>
+        <th>Method</th>
+        <th>Path</th>
+        <th>Code</th>
+        <th>Bytes</th>
+        <th>Referrer</th>
+        <th>User-Agent</th>
+        <th>Host</th>
+        <th>App</th>
+        <th>Time</th>
+      </tr>
+      <tr class="log-section">
+        <td class="date log-date"></td>
+        <td class="log-method"></td>
+        <td><code class="log-path"></code></td>
+        <td class="log-response_code"></td>
+        <td class="log-response_bytes"></td>
+        <td><a href="" class="log-referrer"></a></td>
+        <td class="log-user_agent"></td>
+        <td><a href="" class="log-host"></a></td>
+        <td class="log-app_name"></td>
+        <td class="log-milliseconds"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="template-apache_error_log">
+    <div class="log-section">
+      <div class="log-section-header">
+        <span class="log-warning-level">level</span>
+        <span class="date log-date">date</span>
+        <code class="log-client"></code>
+      </div>
+      <pre class="log-message"></pre>
+    </div>
+  </div>
+
+</div><!-- /templates -->
 
 </body>
 </html>

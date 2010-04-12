@@ -26,3 +26,45 @@ body {
 pre.content {
   overflow: auto;
 }
+
+code.log-line {
+  white-space: pre-wrap;
+}
+
+div.log-section {
+  border-bottom: 1px dotted #aaa;
+}
+
+div.log-section-header {
+  border-bottom: 1px dotted #eee;
+  font-size: 80%;
+  margin: 0;
+}
+
+.log-warning-level-notice {
+  background-color: #ff9;
+}
+
+.log-warning-level-warn {
+  background-color: #fd9;
+}
+
+.log-warning-level-error {
+  background-color: #f99;
+}
+
+.log-warning-level-crit {
+  background-color: #f77;
+}
+
+.log-user_agent {
+  font-size: 70%;
+}
+
+.log-date {
+  font-size: 70%;
+}
+
+.log-response_bytes {
+  text-align: right;
+}
