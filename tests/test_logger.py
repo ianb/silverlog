@@ -8,14 +8,17 @@ execfile(fn, ns)
 wsgi_app = ns['application']
 app = TestApp(wsgi_app)
 
+here_id = os.path.dirname(os.path.dirname(__file__)).replace('/', '_').strip('_')
+
 def test_app():
-    assert wsgi_app.log_set.dirs
-    resp = app.get('/')
-    resp.mustcontain(
-        'setup-node.log', 'rewrite.log')
-    resp = resp.click(href=r'/view/system\?path=.*rewrite\.log')
-    print resp
+    resp = app.get('/api/list-logs')
+    assert resp.json
+    resp = app.get('/api/log/%s_tests_test-logs_apache2_access.log'
+                   % here_id)
+    assert resp.json
+    import pprint
+    pprint.pprint(resp.json['chunks'][0])
+    assert 0
 
 if __name__ == '__main__':
     test_app()
-    
