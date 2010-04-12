@@ -1,15 +1,16 @@
 <html>
 <head>
-<link href="/style.css" type="text/css" rel="stylesheet" />
-<!-- <script
+<link href="./style.css" type="text/css" rel="stylesheet" />
+<script
 src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
--->
+<!--
 <script
 src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-<script src="/sammy.js"></script>
-<script src="/pure.js"></script>
-<script src="/jquery.relatize_date.js"></script>
-<script src="/script.js"></script>
+-->
+<script src="./sammy.js"></script>
+<script src="./pure.js"></script>
+<script src="./jquery.relatize_date.js"></script>
+<script src="./script.js"></script>
 <title>Silver Logs</title>
 </head>
 <body>
@@ -26,11 +27,14 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
     <li class="logs"><a class="description link@href"
      href="">description</a></li>
   </ul>
+
+  <h3 id="skipped-list-title">Skipped files:</h3>
+  <ul id="skipped-list">
+    <li></li>
+  </ul>
 </div>
 
 <div id="log-view" style="display: none">
-  <h2 class="description">description</h2>
-  <pre class="content"></pre>
 </div>
 
 </div><!-- /#body -->
@@ -58,7 +62,7 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
         <th>Time</th>
       </tr>
       <tr class="log-section">
-        <td class="date log-date"></td>
+        <td><span class="date log-date"></span></td>
         <td class="log-method"></td>
         <td><code class="log-path"></code></td>
         <td class="log-response_code"></td>
@@ -67,7 +71,7 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
         <td class="log-user_agent"></td>
         <td><a href="" class="log-host"></a></td>
         <td class="log-app_name"></td>
-        <td class="log-milliseconds"></td>
+        <td class="log-time"></td>
       </tr>
     </table>
   </div>
@@ -78,6 +82,16 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
         <span class="log-warning-level">level</span>
         <span class="date log-date">date</span>
         <code class="log-client"></code>
+      </div>
+      <pre class="log-message"></pre>
+    </div>
+  </div>
+
+  <div class="template-apache_rewrite_log">
+    <div class="log-section">
+      <div class="log-section-header">
+        <span class="date log-date">date</span>
+        <code class="log-remote_addr">remote_addr</code>
       </div>
       <pre class="log-message"></pre>
     </div>

@@ -41,6 +41,10 @@ div.log-section-header {
   margin: 0;
 }
 
+.log-warning-level {
+  padding: 0 0.5em 0 0.5em;
+}
+
 .log-warning-level-notice {
   background-color: #ff9;
 }
@@ -57,14 +61,31 @@ div.log-section-header {
   background-color: #f77;
 }
 
-.log-user_agent {
+.log-date, .log-method, .log-user_agent, .log-app_name {
   font-size: 70%;
 }
 
-.log-date {
-  font-size: 70%;
-}
-
-.log-response_bytes {
+.log-response_bytes, .log-time {
   text-align: right;
+}
+
+.log-section-header th {
+  font-weight: normal;
+  border-bottom: 1px solid #000;
+}
+
+.response-code-200, .response-code-304 {
+  color: #999;
+}
+
+.response-code-404 {
+  color: #b72;
+}
+
+.response-code-500 {
+  color: #b00;
+}
+
+.response-code-301 {
+  color: #55a;
 }
