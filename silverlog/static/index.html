@@ -10,14 +10,23 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
 <script src="./sammy.js"></script>
 <script src="./pure.js"></script>
 <script src="./jquery.relatize_date.js"></script>
+<script src="./jquery.cookie.js"></script>
 <script src="./script.js"></script>
 <title>Silver Logs</title>
 </head>
 <body>
 
 <div id="header">
+  <span class="controls">
+    <select name="checkpoint" id="checkpoint">
+      <option value="">All items</option>
+    </select>
+  </span>
+
+
   <h1><a href="#/">Silver Logs:</a>
   <span id="title-slot"></span></h1>
+
 </div>
 
 <div id="body">
@@ -82,6 +91,17 @@ src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
         <span class="log-warning-level">level</span>
         <span class="date log-date">date</span>
         <code class="log-client"></code>
+      </div>
+      <pre class="log-message"></pre>
+    </div>
+  </div>
+
+  <div class="template-silver_error_log">
+    <div class="log-section">
+      <div class="log-section-header">
+        <span class="log-method">method</span>
+        <code class="log-path">path</code>
+        <span class="date log-date">date</span>
       </div>
       <pre class="log-message"></pre>
     </div>

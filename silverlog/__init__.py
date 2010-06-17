@@ -3,6 +3,7 @@ import re
 import json
 import time
 import tempita
+import cPickle as pickle
 from webob.dec import wsgify
 from webob import exc
 from webob import Response
@@ -15,6 +16,7 @@ class Application(object):
     map.connect('list_logs', '/api/list-logs', method='list_logs')
     map.connect('log_view', '/api/log/{id}', method='log_view')
     map.connect('skipped_files', '/api/skipped-files', method='skipped_files')
+    map.connect('checkpoint', '/api/checkpoint', method='checkpoint')
 
     def __init__(self, dirs=None, template_base=None):
         if template_base:
@@ -58,7 +60,7 @@ class Application(object):
         result = dict(
             path=log.path, group=log.group,
             id=log.id, description=log.description,
-            chunks=log.parse_chunks(),
+            chunks=log.parse_chunks(self.checkpoint_info(req)),
             log_type=log.parser)
         if 'nocontent' not in req.GET:
             result['content'] = log.content()
@@ -69,8 +71,64 @@ class Application(object):
             skipped_files=self.log_set.skipped_files)
         return json_response(result)
 
+    def checkpoint(self, req):
+        if req.method == 'POST':
+            id = self.make_new_checkpoint()
+            return json_response(dict(checkpoint=id))
+        elif req.method == 'GET':
+            return json_response(dict(
+                checkpoints=[c for c in self.checkpoint_list()]))
+
+    def make_new_checkpoint(self):
+        date = time.gmtime()
+        timestamp = time.strftime('%Y%m%dT%H%M%S', date)
+        date = translate_date(date)
+        fn = self.checkpoint_filename(timestamp)
+        data = {}
+        for group in self.log_set.logs.values():
+            for log_filename in group.keys():
+                size = os.path.getsize(log_filename)
+                data[log_filename] = size
+        fp = open(fn, 'wb')
+        pickle.dump(data, fp)
+        fp.close()
+        return dict(id=timestamp, date=date)
+
+    def checkpoint_list(self):
+        result = []
+        for name in os.listdir(self.checkpoint_dir):
+            base, ext = os.path.splitext(name)
+            if ext != '.checkpoint':
+                continue
+            date = time.strptime(base, '%Y%m%dT%H%M%S')
+            result.append(dict(id=base, date=translate_date(date)))
+        return result
+
+    def checkpoint_info(self, req):
+        if not req.GET.get('checkpoint'):
+            return None
+        fn = self.checkpoint_filename(req.GET['checkpoint'])
+        fp = open(fn, 'rb')
+        data = pickle.load(fp)
+        fp.close()
+        return data
+
+    def checkpoint_filename(self, id):
+        assert re.search(r'^[a-zA-Z0-9]+$', id)
+        path = os.path.join(self.checkpoint_dir, id+'.checkpoint')
+        if not os.path.exists(os.path.dirname(path)):
+            os.makedirs(os.path.dirname(path))
+        return path
+
+    @property
+    def checkpoint_dir(self):
+        dir = os.path.join(os.environ['CONFIG_FILES'], 'checkpoints')
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        return dir
+
 NAMES = [
-    (r'^SILVER_DIR/apps/(?P<app>[^/]+)/error.log(?:\.(?P<number>\d+))?$',
+    (r'^SILVER_DIR/apps/(?P<app>[^/]+)/errors\.log(?:\.(?P<number>\d+))?$',
      ('{{app}}', '{{app}}: error log{{if number}} (backup {{number}}){{endif}}'),
      'silver_error_log'),
     (r'^SILVER_DIR/apps/(?P<app>[^/]+)/(?P<name>.*)(?:\.(?P<number>\d+))?$',
@@ -156,19 +214,31 @@ class Log(object):
         fp.close()
         return c
 
-    def parse_chunks(self):
-        method = getattr(self, self.parser)
-        return method()
-
-    def generic_log(self):
+    def parse_chunks(self, checkpoint_info):
+        place = None
+        if checkpoint_info and checkpoint_info.get(self.path):
+            place = checkpoint_info[self.path]
         fp = open(self.path)
+        try:
+            if place:
+                print 'seeking %s to %s' % (self.path, place)
+                fp.seek(place)
+            else:
+                print 'No seek on %s' % self.path
+            method = getattr(self, self.parser)
+            result = method(fp)
+            #result['offset'] = place
+            return result
+        finally:
+            fp.close()
+
+    def generic_log(self, fp):
         l = []
         for line in fp:
             l.append({'data': line.strip()})
         return l
 
-    def apache_access_log(self):
-        fp = open(self.path)
+    def apache_access_log(self, fp):
         l = []
         regex = re.compile(
             r'''
@@ -208,19 +278,14 @@ class Log(object):
                 data = match.groupdict()
                 if data.get('app_name') == '-':
                     data['app_name'] = ''
-                data['date'] = self._translate_apache_date(data['date'])
+                data['date'] = translate_apache_date(data['date'])
             else:
                 data = {}
             data['data'] = line
             l.append(data)
         return l
 
-    @staticmethod
-    def _translate_apache_date(date):
-        return time.strftime('%B %d, %Y %H:%M:%S', time.strptime(date.split()[0], '%d/%b/%Y:%H:%M:%S'))
-
-    def apache_error_log(self):
-        fp = open(self.path)
+    def apache_error_log(self, fp):
         l = []
         regex = re.compile(
             r'''
@@ -257,8 +322,7 @@ class Log(object):
             l.append(data)
         return l
 
-    def silver_setup_node_log(self):
-        fp = open(self.path)
+    def silver_setup_node_log(self, fp):
         l = []
         rerun = re.compile(
             r'''
@@ -280,7 +344,7 @@ class Log(object):
             if match:
                 last_item.update(match.groupdict())
                 continue
-            if line == '-'*len(line):
+            if line == '-' * len(line):
                 last_item['data'] = '\n'.join(last_item['data'])
                 l.append(last_item)
                 last_item = {}
@@ -291,8 +355,7 @@ class Log(object):
             l.append(last_item)
         return l
 
-    def apache_rewrite_log(self):
-        fp = open(self.path)
+    def apache_rewrite_log(self, fp):
         l = []
         regex = re.compile(
             r'''
@@ -319,7 +382,7 @@ class Log(object):
                 last_item = l[-1]
             else:
                 data = match.groupdict()
-                data['date'] = self._translate_apache_date(data['date'])
+                data['date'] = translate_apache_date(data['date'])
                 if not data['message'].startswith('applying pattern'):
                     data['message'] = '  ' + data['message']
                 if (last_item
@@ -334,6 +397,43 @@ class Log(object):
                     last_item = data
         return l
 
+    def silver_error_log(self, fp):
+        l = []
+        start_regex = re.compile(
+            r'''
+            Errors \s+ for \s+ request \s+
+            (?P<method>[A-Z]+) \s+
+            (?P<path>[^\s]+) \s+
+            \((?P<date>[^)]*)\):
+            ''', re.VERBOSE)
+        end_regex = re.compile(
+            r'''Finish errors for request''')
+        for line in fp:
+            line = line.rstrip()
+            match = start_regex.match(line)
+            if match:
+                l.append(match.groupdict())
+                try:
+                    l[-1]['date'] = translate_date(time.strptime(l[-1]['date'].split(',')[0], '%Y-%m-%d %H:%M:%S'))
+                except ValueError:
+                    # Just don't convert if it's weird
+                    pass
+                l[-1]['lines'] = []
+                continue
+            match = end_regex.match(line)
+            if match:
+                # Well, I guess we don't care
+                continue
+            if not l:
+                l.append(dict(method='unknown',
+                              path='unknown',
+                              date=None,
+                              lines=[]))
+            l[-1]['lines'].append(line)
+        for item in l:
+            item['message'] = '\n'.join(item.pop('lines'))
+        return l
+
     @property
     def id(self):
         id = self.path.replace('/', '_').strip('_')
@@ -343,3 +443,9 @@ def json_response(data, **kw):
     return Response(json.dumps(data),
                     content_type='application/json',
                     **kw)
+
+def translate_apache_date(date):
+    return translate_date(time.strptime(date.split()[0], '%d/%b/%Y:%H:%M:%S'))
+
+def translate_date(date):
+    return time.strftime('%B %d, %Y %H:%M:%S', date)
