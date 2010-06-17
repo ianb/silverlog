@@ -89,3 +89,7 @@ div.log-section-header {
 .response-code-301 {
   color: #55a;
 }
+
+.controls {
+  float: right;
+}

@@ -10,6 +10,59 @@ $.fn.ajaxRender = function (options, declarations) {
   return $.ajax(options);
 };
 
+var currentCheckpoint = null;
+
+$(function () {
+
+  $.ajax({
+    url: "./api/checkpoint",
+    dataType: "json",
+    success: function (result) {
+      $.each(result.checkpoints, function () {
+        var el = $('<option></option>').attr('value', this.id).attr('title', this.date).text($.relatizeDate.timeAgoInWords(new Date(this.date), true));
+        $('#checkpoint').append(el);
+      });
+      if ($.cookie('checkpoint')) {
+        $('#checkpoint option[value="'+$.cookie('checkpoint')+'"]').select();
+      }
+      $('#checkpoint').append(
+        $('<option id="checkpoint-add-new" value="__new__">New checkpoint</option>'));
+      $('#checkpoint').bind('change', function () {
+        currentCheckpoint = $('#checkpoint').val() || null;
+        $.cookie('checkpoint', currentCheckpoint || '');
+        if (currentCheckpoint == "__new__") {
+          $.ajax({
+            url: "./api/checkpoint",
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+              var el = $('<option></option>').attr('value', result.checkpoint.id).attr('title', result.checkpoint.date).text($.relatizeDate.timeAgoInWords(new Date(result.checkpoint.date), true));
+              $('#checkpoint-add-new').before(el);
+              el.select();
+              $.cookie('checkpoint', result.checkpoint.id);
+            }
+          });
+        }
+      });
+    }
+  });
+
+});
+
+function addCheckpoint(url) {
+  if (! currentCheckpoint) {
+    return url;
+  } else {
+    if (url.indexOf('?') == -1) {
+      url += '?';
+    } else {
+      url += '&';
+    }
+    url += 'checkpoint=' + currentCheckpoint;
+    return url;
+  }
+}
+
 var app = $.sammy(function () {
   this.element_selector = '#body';
 
@@ -61,7 +114,7 @@ var app = $.sammy(function () {
     moveScreen('#log-view');
     $('#header #title-slot').text('Loading...');
     $.ajax({
-      url: "./api/log/" + this.params.log_id + "?nocontent",
+      url: addCheckpoint("./api/log/" + this.params.log_id + "?nocontent"),
       dataType: "json",
       success: function (result) {
         var log_type = result.log_type;
@@ -169,6 +222,17 @@ templateRules = {
         ".log-message": "chunk.message"
       }
     }
+  },
+
+  "silver_error_log": {
+    "div.log-section": {
+      "chunk<-chunks": {
+        ".log-date": "chunk.date",
+        ".log-method": "chunk.method",
+        ".log-path": "chunk.path",
+        ".log-message": "chunk.message"
+      }
+    }
   }
 
 };
@@ -184,4 +248,15 @@ function moveScreen(selector) {
   currentScreen = selector;
   el.show();
   return el;
+}
+
+function catcher(func) {
+  return function () {
+    try {
+      return func.apply(this, arguments);
+    } catch (e) {
+      Sammy.log('Got exception in function', func, e);
+      throw(e);
+    }
+  };
 }
